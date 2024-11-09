@@ -5,7 +5,7 @@ import json
 
 database_name = "bookshelf"
 database_path = "postgresql://{}:{}@{}/{}".format(
-    "student", "student", "localhost:5432", database_name
+    "postgres", "Divit%402017", "localhost:5432", database_name
 )
 
 db = SQLAlchemy()
@@ -21,8 +21,8 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
-
+    with app.app_context():
+        db.create_all()
 
 """
 Book
@@ -59,5 +59,5 @@ class Book(db.Model):
             "id": self.id,
             "title": self.title,
             "author": self.author,
-            "rating": self.rating,
+            "rating": self.rating * '*',
         }
